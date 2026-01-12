@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python List Operations</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #1a2a6c, #2a3b7a);
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        header {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        header h1 {
+            font-size: 2.8rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        
+        header p {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto;
+            opacity: 0.9;
+        }
+        
+        .content-wrapper {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+        
+        .operations-panel {
+            flex: 1;
+            min-width: 300px;
+            background: white;
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        }
+        
+        .demo-panel {
+            flex: 1;
+            min-width: 300px;
+            background: white;
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        }
+        
+        h2 {
+            color: #2a3b7a;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #eaeaea;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        h2 i {
+            color: #1a2a6c;
+        }
+        
+        .operation {
+            background: #f8f9fa;
+            border-left: 4px solid #1a2a6c;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 0 5px 5px 0;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        
+        .operation:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .operation h3 {
+            color: #2a3b7a;
+            margin-bottom: 8px;
+            font-size: 1.2rem;
+        }
+        
+        .code-example {
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 12px;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            margin: 10px 0;
+            font-size: 0.95rem;
+            overflow-x: auto;
+        }
+        
+        .demo-controls {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        
+        input {
+            flex: 1;
+            min-width: 200px;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+        
+        button {
+            background: #1a2a6c;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background 0.3s, transform 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        button:hover {
+            background: #2a3b7a;
+            transform: translateY(-2px);
+        }
+        
+        .output-section {
+            background: #f8f9fa;
+            border-radius: 5px;
+            padding: 20px;
+            margin-top: 20px;
+            min-height: 200px;
+            border: 1px solid #eaeaea;
+        }
+        
+        .output-section h3 {
+            margin-bottom: 15px;
+            color: #2a3b7a;
+        }
+        
+        #current-list {
+            font-family: 'Courier New', monospace;
+            background: white;
+            padding: 15px;
+            border-radius: 5px;
+            border: 1px dashed #1a2a6c;
+            margin-bottom: 20px;
+            font-size: 1.1rem;
+            color: #2a3b7a;
+            font-weight: bold;
+        }
+        
+        #output {
+            font-family: 'Courier New', monospace;
+            white-space: pre-wrap;
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+        
+        .operation-list {
+            max-height: 500px;
+            overflow-y: auto;
+            padding-right: 10px;
+        }
+        
+        .highlight {
+            color: #e74c3c;
+            font-weight: bold;
+        }
+        
+        footer {
+            text-align: center;
+            color: white;
+            padding: 20px;
+            margin-top: 30px;
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+        
+        @media (max-width: 768px) {
+            .content-wrapper {
+                flex-direction: column;
+            }
+            
+            header h1 {
+                font-size: 2.2rem;
+            }
+            
+            .operations-panel, .demo-panel {
+                min-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-list"></i> Python List Operations</h1>
+            <p>Lists are one of the most versatile data structures in Python. They are ordered, mutable, and allow duplicate elements. Explore common list operations below.</p>
+        </header>
+        
+        <div class="content-wrapper">
+            <div class="operations-panel">
+                <h2><i class="fas fa-cogs"></i> List Operations & Methods</h2>
+                <div class="operation-list">
+                    <div class="operation">
+                        <h3>Creating Lists</h3>
+                        <p>Lists can be created using square brackets or the <span class="highlight">list()</span> constructor.</p>
+                        <div class="code-example"># Creating a list
+fruits = ["apple", "banana", "cherry"]
+numbers = list(range(1, 6))
+empty_list = []</div>
+                    </div>
+                    
+                    <div class="operation">
+                        <h3>Accessing Elements</h3>
+                        <p>Access list items by index (positive or negative).</p>
+                        <div class="code-example">fruits = ["apple", "banana", "cherry"]
+print(fruits[0])   # First item: "apple"
+print(fruits[-1])  # Last item: "cherry"
+print(fruits[1:3]) # Slicing: ["banana", "cherry"]</div>
+                    </div>
+                    
+                    <div class="operation">
+                        <h3>Adding Elements</h3>
+                        <p>Use <span class="highlight">append()</span>, <span class="highlight">insert()</span>, or <span class="highlight">extend()</span> to add items.</p>
+                        <div class="code-example">fruits = ["apple", "banana"]
+fruits.append("orange")     # Adds to the end
+fruits.insert(1, "mango")  # Inserts at index 1
+fruits.extend(["grape", "kiwi"]) # Adds multiple items</div>
+                    </div>
+                    
+                    <div class="operation">
+                        <h3>Removing Elements</h3>
+                        <p>Use <span class="highlight">remove()</span>, <span class="highlight">pop()</span>, or <span class="highlight">clear()</span> to remove items.</p>
+                        <div class="code-example">fruits = ["apple", "banana", "cherry", "banana"]
+fruits.remove("banana")  # Removes first "banana"
+popped = fruits.pop()    # Removes and returns last item
+fruits.pop(0)            # Removes item at index 0
+# fruits.clear()         # Removes all items</div>
+                    </div>
+                    
+                    <div class="operation">
+                        <h3>List Comprehension</h3>
+                        <p>A concise way to create lists based on existing lists.</p>
+                        <div class="code-example"># Create a list of squares
+squares = [x**2 for x in range(1, 6)]
+# Result: [1, 4, 9, 16, 25]
+
+# With condition
+even_squares = [x**2 for x in range(1, 11) if x % 2 == 0]
+# Result: [4, 16, 36, 64, 100]</div>
+                    </div>
+                    
+                    <div class="operation">
+                        <h3>Sorting & Reversing</h3>
+                        <p>Use <span class="highlight">sort()</span>, <span class="highlight">sorted()</span>, and <span class="highlight">reverse()</span>.</p>
+                        <div class="code-example">numbers = [5, 2, 8, 1, 9]
+numbers.sort()               # Sorts in-place: [1, 2, 5, 8, 9]
+sorted_nums = sorted(numbers, reverse=True) # Returns new sorted list
+numbers.reverse()            # Reverses the list in-place</div>
+                    </div>
+                    
+                    <div class="operation">
+                        <h3>Other Useful Methods</h3>
+                        <p><span class="highlight">len()</span>, <span class="highlight">index()</span>, <span class="highlight">count()</span>, <span class="highlight">copy()</span>.</p>
+                        <div class="code-example">fruits = ["apple", "banana", "cherry", "banana"]
+length = len(fruits)            # Returns 4
+idx = fruits.index("banana")    # Returns 1
+count = fruits.count("banana")  # Returns 2
+fruits_copy = fruits.copy()     # Creates a shallow copy</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="demo-panel">
+                <h2><i class="fas fa-play-circle"></i> Interactive Demo</h2>
+                
+                <div class="demo-controls">
+                    <input type="text" id="list-input" placeholder="Enter list elements (comma separated) e.g. 1, 2, 3, 4">
+                    <button id="update-list"><i class="fas fa-sync-alt"></i> Update List</button>
+                </div>
+                
+                <div class="demo-controls">
+                    <input type="text" id="operation-input" placeholder="Enter operation e.g. append(5), sort(), pop()">
+                    <button id="execute-operation"><i class="fas fa-bolt"></i> Execute</button>
+                </div>
+                
+                <div class="output-section">
+                    <h3>Current List</h3>
+                    <div id="current-list">[1, 2, 3, 4, 5]</div>
+                    
+                    <h3>Operation Output</h3>
+                    <div id="output">No operation executed yet. Try operations like "append(5)", "sort()", "pop()", etc.</div>
+                </div>
+                
+                <div class="demo-controls" style="margin-top: 20px; justify-content: center;">
+                    <button id="example1"><i class="fas fa-magic"></i> List Comprehension</button>
+                    <button id="example2"><i class="fas fa-magic"></i> Sorting Example</button>
+                    <button id="reset-list"><i class="fas fa-redo"></i> Reset List</button>
+                </div>
+            </div>
+        </div>
+        
+        <footer>
+            <p>Python List Operations Tutorial | Lists are mutable sequences, typically used to store collections of homogeneous items</p>
+            <p>List operations time complexity: append O(1), insert O(n), pop O(1) from end, O(n) from beginning</p>
+        </footer>
+    </div>
+
+    <script>
+        // Initialize the list
+        let currentList = [1, 2, 3, 4, 5];
+        
+        // Update the displayed list
+        function updateDisplay() {
+            document.getElementById('current-list').textContent = JSON.stringify(currentList);
+        }
+        
+        // Execute a list operation
+        function executeOperation(operation) {
+            const outputDiv = document.getElementById('output');
+            let result = '';
+            let operationPerformed = '';
+            
+            try {
+                // Handle different operations
+                if (operation.startsWith('append(')) {
+                    const value = operation.match(/append\((.+)\)/)[1];
+                    const parsedValue = parseValue(value);
+                    currentList.push(parsedValue);
+                    result = `Appended ${JSON.stringify(parsedValue)} to the list`;
+                    operationPerformed = `list.append(${JSON.stringify(parsedValue)})`;
+                }
+                else if (operation.startsWith('insert(')) {
+                    const match = operation.match(/insert\((\d+),\s*(.+)\)/);
+                    const index = parseInt(match[1]);
+                    const value = parseValue(match[2]);
+                    currentList.splice(index, 0, value);
+                    result = `Inserted ${JSON.stringify(value)} at index ${index}`;
+                    operationPerformed = `list.insert(${index}, ${JSON.stringify(value)})`;
+                }
+                else if (operation.startsWith('remove(')) {
+                    const value = operation.match(/remove\((.+)\)/)[1];
+                    const parsedValue = parseValue(value);
+                    const index = currentList.indexOf(parsedValue);
+                    if (index > -1) {
+                        currentList.splice(index, 1);
+                        result = `Removed first occurrence of ${JSON.stringify(parsedValue)}`;
+                    } else {
+                        result = `Value ${JSON.stringify(parsedValue)} not found in list`;
+                    }
+                    operationPerformed = `list.remove(${JSON.stringify(parsedValue)})`;
+                }
+                else if (operation === 'pop()') {
+                    if (currentList.length > 0) {
+                        const popped = currentList.pop();
+                        result = `Popped value: ${JSON.stringify(popped)}`;
+                    } else {
+                        result = 'Cannot pop from an empty list';
+                    }
+                    operationPerformed = 'list.pop()';
+                }
+                else if (operation.startsWith('pop(')) {
+                    const index = parseInt(operation.match(/pop\((\d+)\)/)[1]);
+                    if (index >= 0 && index < currentList.length) {
+                        const popped = currentList.splice(index, 1)[0];
+                        result = `Popped value at index ${index}: ${JSON.stringify(popped)}`;
+                    } else {
+                        result = `Index ${index} out of range`;
+                    }
+                    operationPerformed = `list.pop(${index})`;
+                }
+                else if (operation === 'sort()') {
+                    currentList.sort((a, b) => {
+                        if (typeof a === 'number' && typeof b === 'number') {
+                            return a - b;
+                        }
+                        return String(a).localeCompare(String(b));
+                    });
+                    result = 'List sorted in ascending order';
+                    operationPerformed = 'list.sort()';
+                }
+                else if (operation === 'reverse()') {
+                    currentList.reverse();
+                    result = 'List reversed';
+                    operationPerformed = 'list.reverse()';
+                }
+                else if (operation === 'clear()') {
+                    currentList = [];
+                    result = 'List cleared';
+                    operationPerformed = 'list.clear()';
+                }
+                else if (operation === 'copy()') {
+                    const copiedList = [...currentList];
+                    result = `Copied list: ${JSON.stringify(copiedList)}`;
+                    operationPerformed = 'list.copy()';
+                }
+                else if (operation === 'len()') {
+                    result = `Length of list: ${currentList.length}`;
+                    operationPerformed = 'len(list)';
+                }
+                else if (operation.startsWith('index(')) {
+                    const value = operation.match(/index\((.+)\)/)[1];
+                    const parsedValue = parseValue(value);
+                    const index = currentList.indexOf(parsedValue);
+                    if (index > -1) {
+                        result = `Index of ${JSON.stringify(parsedValue)}: ${index}`;
+                    } else {
+                        result = `Value ${JSON.stringify(parsedValue)} not found in list`;
+                    }
+                    operationPerformed = `list.index(${JSON.stringify(parsedValue)})`;
+                }
+                else if (operation.startsWith('count(')) {
+                    const value = operation.match(/count\((.+)\)/)[1];
+                    const parsedValue = parseValue(value);
+                    const count = currentList.filter(item => 
+                        JSON.stringify(item) === JSON.stringify(parsedValue)).length;
+                    result = `Count of ${JSON.stringify(parsedValue)}: ${count}`;
+                    operationPerformed = `list.count(${JSON.stringify(parsedValue)})`;
+                }
+                else if (operation.startsWith('extend(')) {
+                    const value = operation.match(/extend\((.+)\)/)[1];
+                    // Try to parse as array
+                    try {
+                        const arr = JSON.parse(`[${value}]`);
+                        currentList.push(...arr);
+                        result = `Extended list with: ${JSON.stringify(arr)}`;
+                        operationPerformed = `list.extend([${value}])`;
+                    } catch (e) {
+                        result = 'Error: Could not parse array. Use format: extend(1, 2, 3)';
+                    }
+                }
+                else if (operation.startsWith('slice(')) {
+                    const match = operation.match(/slice\((\d*),\s*(\d*)\)/);
+                    const start = match[1] === '' ? 0 : parseInt(match[1]);
+                    const end = match[2] === '' ? currentList.length : parseInt(match[2]);
+                    const sliced = currentList.slice(start, end);
+                    result = `Slice [${start}:${end}]: ${JSON.stringify(sliced)}`;
+                    operationPerformed = `list[${start}:${end}]`;
+                }
+                else {
+                    result = `Unknown operation: ${operation}. Try: append(value), insert(index, value), remove(value), pop(), sort(), reverse(), etc.`;
+                }
+                
+                // Update the output
+                outputDiv.innerHTML = `<span class="highlight">Operation:</span> ${operationPerformed}\n<span class="highlight">Result:</span> ${result}\n<span class="highlight">List after operation:</span> ${JSON.stringify(currentList)}`;
+                
+                // Update the displayed list
+                updateDisplay();
+                
+            } catch (error) {
+                outputDiv.innerHTML = `<span class="highlight">Error:</span> ${error.message}\nMake sure to use proper syntax like "append(5)", "sort()", etc.`;
+            }
+        }
+        
+        // Parse input values (could be string or number)
+        function parseValue(str) {
+            str = str.trim();
+            
+            // Check if it's a number
+            if (!isNaN(str) && str !== '') {
+                return Number(str);
+            }
+            
+            // Check if it's a boolean
+            if (str === 'True' || str === 'true') return true;
+            if (str === 'False' || str === 'false') return false;
+            
+            // Check if it's null
+            if (str === 'None' || str === 'null') return null;
+            
+            // Remove quotes if present
+            if ((str.startsWith("'") && str.endsWith("'")) || 
+                (str.startsWith('"') && str.endsWith('"'))) {
+                return str.slice(1, -1);
+            }
+            
+            // Return as string
+            return str;
+        }
+        
+        // Initialize with example list
+        updateDisplay();
+        
+        // Event listeners
+        document.getElementById('update-list').addEventListener('click', function() {
+            const input = document.getElementById('list-input').value.trim();
+            if (input) {
+                try {
+                    // Try to parse as JSON array first
+                    if (input.startsWith('[') && input.endsWith(']')) {
+                        currentList = JSON.parse(input);
+                    } else {
+                        // Parse as comma-separated values
+                        const items = input.split(',').map(item => parseValue(item.trim()));
+                        currentList = items;
+                    }
+                    updateDisplay();
+                    document.getElementById('output').textContent = `List updated to: ${JSON.stringify(currentList)}`;
+                } catch (error) {
+                    document.getElementById('output').textContent = `Error parsing input: ${error.message}. Use format: 1, 2, 3 or [1, 2, 3]`;
+                }
+            }
+        });
+        
+        document.getElementById('execute-operation').addEventListener('click', function() {
+            const operation = document.getElementById('operation-input').value.trim();
+            if (operation) {
+                executeOperation(operation);
+            }
+        });
+        
+        document.getElementById('operation-input').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                const operation = this.value.trim();
+                if (operation) {
+                    executeOperation(operation);
+                }
+            }
+        });
+        
+        // Example 1: List Comprehension
+        document.getElementById('example1').addEventListener('click', function() {
+            // Create squares of numbers 1-5
+            const squares = [1, 2, 3, 4, 5].map(x => x * x);
+            currentList = squares;
+            updateDisplay();
+            document.getElementById('output').innerHTML = 
+                `<span class="highlight">List Comprehension Example:</span>\n` +
+                `squares = [x**2 for x in range(1, 6)]\n` +
+                `<span class="highlight">Result:</span> ${JSON.stringify(squares)}`;
+        });
+        
+        // Example 2: Sorting
+        document.getElementById('example2').addEventListener('click', function() {
+            currentList = [9, 3, 7, 1, 5];
+            updateDisplay();
+            document.getElementById('output').innerHTML = 
+                `<span class="highlight">Sorting Example:</span>\n` +
+                `Unsorted list: ${JSON.stringify(currentList)}\n` +
+                `sorted_list = sorted(list)\n` +
+                `<span class="highlight">Try executing "sort()" to sort the list</span>`;
+        });
+        
+        // Reset list
+        document.getElementById('reset-list').addEventListener('click', function() {
+            currentList = [1, 2, 3, 4, 5];
+            updateDisplay();
+            document.getElementById('output').textContent = 'List reset to [1, 2, 3, 4, 5]. Try operations like "append(5)", "sort()", "pop()", etc.';
+            document.getElementById('list-input').value = '';
+            document.getElementById('operation-input').value = '';
+        });
+        
+        // Initialize with an example
+        executeOperation('len()');
+    </script>
+</body>
+</html>
