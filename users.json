@@ -1,0 +1,6 @@
+{
+  "data": [
+    {"id":1, "name":  "ahmed", "track":  "BI" , "grade": 100},
+    {"id":2, "name":  "ali", "track":  "BI" , "grade": 100}
+  ]
+}
